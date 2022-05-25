@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: skyblue;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Paginaprincipal">
+   <top>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="¿Quieres conocer Guate?" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Text>
+   </top>
+   <right>
+      <ImageView fitHeight="191.0" fitWidth="278.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@Guatemala.jpg" />
+         </image>
+      </ImageView>
+   </right>
+   <center>
+      <TextArea prefHeight="326.0" prefWidth="271.0" promptText="Guatemala se sitúa en el istmo centroamericano con una extensión territorial de 108, 889 km2 y está limitada al oeste y norte por México, al este con Belice y el golfo de Honduras, al sureste con Honduras y El Salvador, y al sur con el Océano Pacífico. El territorio se encuentra integrado por 22 departamentos, los cuales se dividen en 340 municipios. Su capital es la Ciudad de Guatemala.Guatemala es un país multicultural cuya historia ha estado dividida entre períodos de gobiernos democráticos y períodos de guerra civil y juntas militares. El país emergió de una guerra de 36 años tras la firma de los acuerdos de paz en 1996" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font>
+      </TextArea>
+   </center>
+   <bottom>
+      <Button fx:id="Boton" mnemonicParsing="false" text="Ver màs" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>
