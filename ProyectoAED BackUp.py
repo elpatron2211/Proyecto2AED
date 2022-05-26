@@ -10,7 +10,7 @@ driver = GraphDatabase.driver("bolt://localhost:7687",auth=("neo4j","1234"))
 #-----------------------------------------------------------------------------
 #se crean los querys para poder hacer las relaciones 
 def GetCulturaDb(tx,cultura):
-    query = "MATCH (c:Costo) -- (l:Lugar) RETURN l.name as n"
+    query = "MATCH (c:Cultura) -- (l:Lugar) RETURN l.name as n"
     result_query = tx.run(query,nombre=cultura)
     firsts_relations = []
     for r in result_query:
