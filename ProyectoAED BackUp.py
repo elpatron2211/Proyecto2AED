@@ -10,7 +10,7 @@ driver = GraphDatabase.driver("bolt://localhost:7687",auth=("neo4j","1234"))
 #-----------------------------------------------------------------------------
 #se crean los querys para poder hacer las relaciones 
 def GetCulturaDb(tx,cultura):
-    query = "MATCH (c:Cultura) -- (l:Lugar) RETURN l.name as n"
+    query = "MATCH (c:Cultura) -- (l:Lugar) WHERE c.name = $nombre RETURN l.name as n"
     result_query = tx.run(query,nombre=cultura)
     firsts_relations = []
     for r in result_query:
@@ -18,7 +18,7 @@ def GetCulturaDb(tx,cultura):
     return firsts_relations
 
 def GetTipoLugarDb(tx,TipoLugar):
-    query = "MATCH (t:TipoLugar) -- (l:Lugar) RETURN l.name as n"
+    query = "MATCH (t:TipoLugar) -- (l:Lugar) WHERE t.name = $nombre RETURN l.name as n"
     result_query = tx.run(query,nombre=TipoLugar)
     second_relations = []
     for r in result_query:
@@ -26,7 +26,7 @@ def GetTipoLugarDb(tx,TipoLugar):
     return second_relations
 
 def GetCostosDb(tx,Costo):
-    query = "MATCH (c:Costo) -- (l:Lugar) RETURN l.name as n"
+    query = "MATCH (c:Costo) -- (l:Lugar) WHERE c.name = $name RETURN l.name as n"
     result_query = tx.run(query,nombre=Costo)
     third_relations = []
     for r in result_query:
@@ -144,10 +144,13 @@ print("Tipo de Lugar: "+GetTipoLugar(TipoLugar))
 print("Presupuesto: "+GetCosto(Costo))
 #-----------------------------------------------------------------------------
 #se hacen las listas necesarias para comparar
+cultura_parameter = GetCultura(Cultura)
+Tipo_parameter = GetTipoLugar(TipoLugar)
+Costo_parameter = GetCosto(Costo)
 with(driver.session()) as ses:
-    LugarCultura = ses.write_transaction(GetCulturaDb,GetCultura(Cultura))   
-    LugarTipo = ses.write_transaction(GetTipoLugarDb,GetTipoLugar(TipoLugar))
-    LugarCosto = ses.write_transaction(GetCostosDb,GetCosto(Costo))
+    LugarCultura = ses.write_transaction(GetCulturaDb,cultura_parameter)   
+    LugarTipo = ses.write_transaction(GetTipoLugarDb,Tipo_parameter)
+    LugarCosto = ses.write_transaction(GetCostosDb,Costo_parameter)
     
 Recommended_places = RecomendationsEngine(LugarCultura, LugarTipo, LugarCosto)
 print("De acuerdo con lo que ha respondido, los lugares recomendados para usted en orden de conveniencia son los siguientes:")
