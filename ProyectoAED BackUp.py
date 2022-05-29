@@ -105,16 +105,18 @@ def GetCosto(CostoLugar):
 #se crea la funcion que hara las recomendaciones
 def RecomendationsEngine(lista1,lista2,lista3):
     RecommendedPlaces = []
-    for element in lista1:
-        if element in lista2 and element in lista3:
-            RecommendedPlaces.append(element)
+    for n in lista1:
+        if n in lista2 and n in lista3:
+            RecommendedPlaces.append(n)        
     return RecommendedPlaces
 
 def ShowRecommendations(recommendedplaces):
-    i=1
-    for n in recommendedplaces:
-        print(str(i)+".",n)
-        i=i+1
+    if len(recommendedplaces) == 0:
+        print("Sus respuestas no han ayudado a los criterios de busqueda, lo sentimos")
+    else:
+        for n in recommendedplaces:
+            print(n)
+        
 #-----------------------------------------------------------------------------
 #Inicio del Programa
 print("Bienvenido a GuateGrafoTour, tu mejor sistema de recomendacion")
@@ -143,7 +145,7 @@ print("Presupuesto: "+GetCosto(Costo))
 #-----------------------------------------------------------------------------
 #se hacen las listas necesarias para comparar
 with(driver.session()) as ses:
-    LugarCultura = ses.write_transaction(GetCulturaDb,GetCultura(Cultura))
+    LugarCultura = ses.write_transaction(GetCulturaDb,GetCultura(Cultura))   
     LugarTipo = ses.write_transaction(GetTipoLugarDb,GetTipoLugar(TipoLugar))
     LugarCosto = ses.write_transaction(GetCostosDb,GetCosto(Costo))
     
