@@ -26,7 +26,7 @@ def GetTipoLugarDb(tx,TipoLugar):
     return second_relations
 
 def GetCostosDb(tx,Costo):
-    query = "MATCH (c:Costo) -- (l:Lugar) WHERE c.name = $name RETURN l.name as n"
+    query = "MATCH (c:Costo) -- (l:Lugar) WHERE c.name = $nombre RETURN l.name as n"
     result_query = tx.run(query,nombre=Costo)
     third_relations = []
     for r in result_query:
@@ -111,12 +111,16 @@ def RecomendationsEngine(lista1,lista2,lista3):
     return RecommendedPlaces
 
 def ShowRecommendations(recommendedplaces):
-    if len(recommendedplaces) == 0:
+    if len(recommendedplaces) <= 0:
         print("Sus respuestas no han ayudado a los criterios de busqueda, lo sentimos")
+    elif len(recommendedplaces) > 5:
+        i = 0
+        while i < 5:
+            print(recommendedplaces[i])
+            i = i+1
     else:
         for n in recommendedplaces:
             print(n)
-        
 #-----------------------------------------------------------------------------
 #Inicio del Programa
 print("Bienvenido a GuateGrafoTour, tu mejor sistema de recomendacion")
