@@ -4,6 +4,7 @@ Algoritmos y Estructuras de Datos
 Proyecto Fase No.2
 Pablo Herrea, Juan Miguel Gonzalez-Campo, Pedro Marroquín, Paulo Sanchez
 """
+import csv
 from neo4j import GraphDatabase
 driver = GraphDatabase.driver("bolt://localhost:7687",auth=("neo4j","1234"))
 
@@ -121,8 +122,105 @@ def ShowRecommendations(recommendedplaces):
     else:
         for n in recommendedplaces:
             print(n)
+            
+def IniciarORegistrar():
+    onIn = True
+    while (onIn):    
+        print("Ingrese 1 para iniciar sesión, ingrese 2 para crear un usuario")
+        try:
+            option = 0
+            while option <= 0 or option >2:
+                print("Ingrese una opcion dentro del menu")
+                option = int(input())
+                break
+            return option
+        except Exception:
+            print("Ha ingresado un dato invalido\nDato debe ser un numero, intentelo de nuevo")
+            continue
+    
+    
+def inicioSesion():
+    on = True
+    cancelar1 = "999000111"
+    while(on):
+        print("Ingrese su nombre de usuario")
+        usuario = input()
+        if usuario in dictUsuarios:
+            print("Ingrese su contrasenia")
+            contrasenia = input()
+            if dictUsuarios.get(usuario) == contrasenia:
+                print("Se ha iniciado sesion!")
+                return usuario
+            else: 
+                print("Contrasenia incorrecta, intentelo de nuevo")
+                continue
+        else:
+            print("Usuario no encontrado, ingrese 1 para intentar de nuevo o 2 para regresar al menu de inicio")
+            try:
+                option = int(input("Ingrese una opcion del menu\n"))
+                while option <= 0 or option >2:
+                    print("Ingrese una opcion dentro del menu")
+                    option = int(input())
+                    break
+                if option == 1:
+                    continue
+                if option == 2:
+                    break
+            except Exception:
+                print("Ha ingresado un dato invalido\nDato debe ser un numero, intentelo de nuevo")
+                return False
+    if option == 2:
+        return cancelar1
+        
+def registrar():
+    on2 = True
+    nuevoUsuario = ""
+    while(on2):
+        print("Ingrese un nombre de usuario")
+        nuevoUsuario = ""
+        nuevoUsuario = input()
+        if nuevoUsuario in dictUsuarios or nuevoUsuario == "999000111":
+            print("Lo sentimos ese usuario no esta disponible!")
+            continue
+        else: 
+            break
+    print("Ingrese su contrasenia")
+    nuevaContrasenia = input()
+    usuarioContrasenia = [nuevoUsuario, nuevaContrasenia]
+    with open('usuarios.csv', mode ='a', newline='') as f:
+        csvwriter = csv.writer(f)
+        csvwriter
+        csvwriter.writerow(usuarioContrasenia)
+    print("Usuario aniadido!")
+    return nuevoUsuario
+    
+with open('usuarios.csv', mode='r') as f:
+    csvFile = csv.reader(f, delimiter =',')
+    
+    dictUsuarios = {rows[0]:rows[1] for rows in csvFile}
+
+
+         
+print("\n\nInicio de session\n")
+usuario = ""
+on1 = True
+while (on1):
+    InOReg = IniciarORegistrar()
+    if (InOReg == 1):
+        usuario = inicioSesion()
+        if usuario == "999000111":
+            continue
+        else: 
+            break
+    else:
+        usuario = registrar()
+        break
+
+    
+    
 #-----------------------------------------------------------------------------
 #Inicio del Programa
+print("\n\nHola "+usuario+"!")
 print("Bienvenido a GuateGrafoTour, tu mejor sistema de recomendacion")
 print("Por favor, vaya respondiendo las preguntas y siga las instrucciones a continuacion")
 Cultura = MenuCultura()
