@@ -122,7 +122,12 @@ def ShowRecommendations(recommendedplaces):
     else:
         for n in recommendedplaces:
             print(n)
-            
+
+
+#-----------------------------------------------------------------------------
+#Funciones que trabajan la lógica de inicio de sesión y creación de usuarios
+
+#Funcion para preguntar si se quiere iniciar sesion o registrar un nuevo usuario            
 def IniciarORegistrar():
     onIn = True
     while (onIn):    
@@ -138,7 +143,7 @@ def IniciarORegistrar():
             print("Ha ingresado un dato invalido\nDato debe ser un numero, intentelo de nuevo")
             continue
     
-    
+#Funcion para iniciar sesión con un usuario existente, devuelve el nombre de usuario   
 def inicioSesion():
     on = True
     cancelar1 = "999000111"
@@ -171,7 +176,9 @@ def inicioSesion():
                 return False
     if option == 2:
         return cancelar1
-        
+    
+    
+#Funcion para registrar un nuevo usuario, devuelve el nombre de usuario      
 def registrar():
     on2 = True
     nuevoUsuario = ""
@@ -193,14 +200,19 @@ def registrar():
         csvwriter.writerow(usuarioContrasenia)
     print("Usuario aniadido!")
     return nuevoUsuario
-    
+
+#-----------------------------------------------------------------------------
+#Inicio del Programa   
+
+#Se lee el archivo que contiene los usuarios y contraseñas
 with open('usuarios.csv', mode='r') as f:
     csvFile = csv.reader(f, delimiter =',')
     
     dictUsuarios = {rows[0]:rows[1] for rows in csvFile}
 
 
-         
+   
+#Inicio de sesión o registro de nuevos usuarios 
 print("\n\nInicio de session\n")
 usuario = ""
 on1 = True
@@ -216,10 +228,7 @@ while (on1):
         usuario = registrar()
         break
 
-    
-    
-#-----------------------------------------------------------------------------
-#Inicio del Programa
+#Comenzar preguntas para recomendaciones
 print("\n\nHola "+usuario+"!")
 print("Bienvenido a GuateGrafoTour, tu mejor sistema de recomendacion")
 print("Por favor, vaya respondiendo las preguntas y siga las instrucciones a continuacion")
