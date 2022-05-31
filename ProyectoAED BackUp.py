@@ -210,6 +210,12 @@ with open('usuarios.csv', mode='r') as f:
     
     dictUsuarios = {rows[0]:rows[1] for rows in csvFile}
 
+with open('recomendaciones.csv', mode='r') as f1:
+    csvFile1 = csv.reader(f1, delimiter =',')
+    
+    dictRecomendaciones = {rows[0]:rows[1] for rows in csvFile1}
+
+print(type(dictRecomendaciones.get("juan")))
 
    
 #Inicio de sesión o registro de nuevos usuarios 
@@ -236,9 +242,9 @@ while (onIn):
     print("Por favor, escribe 1 para ver tus recomendaciones anteriores o escribe 2 para encuentrar nuevas")
     try:
         option2 = 0
-        while option2 <= 0 or option >2:
+        while option2 <= 0 or option2 >2:
             print("Ingrese una opcion dentro del menu")
-            option = int(input())
+            option2 = int(input())
             break
         break
     except Exception:
