@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Algoritmos y Estructuras de Datos
 Proyecto Fase No.2
@@ -243,7 +242,7 @@ while (onGlobal):
     
     onIn = True
     while (onIn):    
-        print("Por favor, escribe 1 para ver tus recomendaciones anteriores o escribe 2 para encuentrar nuevas")
+        print("Por favor, escribe 1 para ver tus recomendaciones anteriores o escribe 2 para encontrar nuevas")
         try:
             option2 = 0
             while option2 <= 0 or option2 >2:
@@ -356,4 +355,3 @@ while (onGlobal):
             continue
         if option3 == 2:
             break
-        
