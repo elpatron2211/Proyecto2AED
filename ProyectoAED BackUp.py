@@ -231,7 +231,22 @@ while (on1):
 #Comenzar preguntas para recomendaciones
 print("\n\nHola "+usuario+"!")
 print("Bienvenido a GuateGrafoTour, tu mejor sistema de recomendacion")
-print("Por favor, vaya respondiendo las preguntas y siga las instrucciones a continuacion")
+onIn = True
+while (onIn):    
+    print("Por favor, escribe 1 para ver tus recomendaciones anteriores o escribe 2 para encuentrar nuevas")
+    try:
+        option2 = 0
+        while option2 <= 0 or option >2:
+            print("Ingrese una opcion dentro del menu")
+            option = int(input())
+            break
+        break
+    except Exception:
+        print("Ha ingresado un dato invalido\nDato debe ser un numero, intentelo de nuevo")
+        continue
+
+    
+    
 Cultura = MenuCultura()
 while(Cultura==False):
     print()
@@ -264,6 +279,11 @@ with(driver.session()) as ses:
     LugarCosto = ses.write_transaction(GetCostosDb,Costo_parameter)
     
 Recommended_places = RecomendationsEngine(LugarCultura, LugarTipo, LugarCosto)
+usuarioRec = [usuario, Recommended_places]
+with open('recomendaciones.csv', mode ='a', newline='') as f1:
+        csvwriter1 = csv.writer(f1)
+        csvwriter1
+        csvwriter1.writerow(usuarioRec) 
 print("De acuerdo con lo que ha respondido, los lugares recomendados para usted en orden de conveniencia son los siguientes:")
 print()
 ShowRecommendations(Recommended_places)
