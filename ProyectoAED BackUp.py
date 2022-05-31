@@ -131,7 +131,7 @@ def ShowRecommendations(recommendedplaces):
 def IniciarORegistrar():
     onIn = True
     while (onIn):    
-        print("Ingrese 1 para iniciar sesión, ingrese 2 para crear un usuario")
+        print("\n\nIngrese 1 para iniciar sesión, ingrese 2 para crear un usuario")
         try:
             option = 0
             while option <= 0 or option >2:
@@ -148,7 +148,7 @@ def inicioSesion():
     on = True
     cancelar1 = "999000111"
     while(on):
-        print("Ingrese su nombre de usuario")
+        print("\nIngrese su nombre de usuario")
         usuario = input()
         if usuario in dictUsuarios:
             print("Ingrese su contrasenia")
@@ -160,7 +160,7 @@ def inicioSesion():
                 print("Contrasenia incorrecta, intentelo de nuevo")
                 continue
         else:
-            print("Usuario no encontrado, ingrese 1 para intentar de nuevo o 2 para regresar al menu de inicio")
+            print("\nUsuario no encontrado, ingrese 1 para intentar de nuevo o 2 para regresar al menu de inicio\n\n")
             try:
                 option = int(input("Ingrese una opcion del menu\n"))
                 while option <= 0 or option >2:
@@ -172,7 +172,7 @@ def inicioSesion():
                 if option == 2:
                     break
             except Exception:
-                print("Ha ingresado un dato invalido\nDato debe ser un numero, intentelo de nuevo")
+                print("Ha ingresado un dato invalido\nDato debe ser un numero, intentelo de nuevo\n")
                 return False
     if option == 2:
         return cancelar1
@@ -183,11 +183,11 @@ def registrar():
     on2 = True
     nuevoUsuario = ""
     while(on2):
-        print("Ingrese un nombre de usuario")
+        print("\nIngrese un nombre de usuario")
         nuevoUsuario = ""
         nuevoUsuario = input()
         if nuevoUsuario in dictUsuarios or nuevoUsuario == "999000111":
-            print("Lo sentimos ese usuario no esta disponible!")
+            print("\nLo sentimos ese usuario no esta disponible!\n")
             continue
         else: 
             break
@@ -198,7 +198,7 @@ def registrar():
         csvwriter = csv.writer(f)
         csvwriter
         csvwriter.writerow(usuarioContrasenia)
-    print("Usuario aniadido!")
+    print("Usuario aniadido!\n")
     return nuevoUsuario
 
 #-----------------------------------------------------------------------------
@@ -215,7 +215,6 @@ with open('recomendaciones.csv', mode='r') as f1:
     
     dictRecomendaciones = {rows[0]:rows[1] for rows in csvFile1}
 
-print(type(dictRecomendaciones.get("juan")))
 
    
 #Inicio de sesión o registro de nuevos usuarios 
@@ -237,59 +236,124 @@ while (on1):
 #Comenzar preguntas para recomendaciones
 print("\n\nHola "+usuario+"!")
 print("Bienvenido a GuateGrafoTour, tu mejor sistema de recomendacion")
-onIn = True
-while (onIn):    
-    print("Por favor, escribe 1 para ver tus recomendaciones anteriores o escribe 2 para encuentrar nuevas")
-    try:
-        option2 = 0
-        while option2 <= 0 or option2 >2:
-            print("Ingrese una opcion dentro del menu")
-            option2 = int(input())
+
+
+onGlobal = True
+while (onGlobal):
+    
+    onIn = True
+    while (onIn):    
+        print("Por favor, escribe 1 para ver tus recomendaciones anteriores o escribe 2 para encuentrar nuevas")
+        try:
+            option2 = 0
+            while option2 <= 0 or option2 >2:
+                print("Ingrese una opcion dentro del menu")
+                option2 = int(input())
+                break
             break
-        break
-    except Exception:
-        print("Ha ingresado un dato invalido\nDato debe ser un numero, intentelo de nuevo")
-        continue
+        except Exception:
+            print("Ha ingresado un dato invalido\nDato debe ser un numero, intentelo de nuevo")
+            continue
 
-    
-    
-Cultura = MenuCultura()
-while(Cultura==False):
-    print()
-    Cultura = MenuCultura()
-    
-TipoLugar = MenuTipoLugar()
-while(TipoLugar==False):
-    print()
-    TipoLugar = MenuTipoLugar()
+    if option2 == 1:
+        if usuario in dictRecomendaciones:
+            print("Sus recomendaciones anteriores fueron: ")
+            print(dictRecomendaciones.get(usuario))
+            onIn1 = True
+            while (onIn1):    
+                print("\n\nPor favor, escribe 1 para seguir o escribe 2 para salir del programa")
+                try:
+                    option3 = 0
+                    while option3 <= 0 or option3 >2:
+                        print("Ingrese una opcion dentro del menu")
+                        option3 = int(input())
+                        break
+                    break
+                except Exception:
+                    print("Ha ingresado un dato invalido\nDato debe ser un numero, intentelo de nuevo")
+                    continue
+            if option3 == 1:
+                continue
+            if option3 == 2:
+                break
+        else: 
+            print("No tienes recomendaciones anteriores, por favor intenta completar nuestra encuesta presionando 2 en el menu principal!")
+        
+    if option2 == 2:     
+        Cultura = MenuCultura()
+        while(Cultura==False):
+            print()
+            Cultura = MenuCultura()
+            
+        TipoLugar = MenuTipoLugar()
+        while(TipoLugar==False):
+            print()
+            TipoLugar = MenuTipoLugar()
 
-Costo = MenuCostos()
-while(Costo == False):
-    print()
-    Costo = MenuCostos()
+        Costo = MenuCostos()
+        while(Costo == False):
+            print()
+            Costo = MenuCostos()
 
-#-----------------------------------------------------------------------------
-print()
-print("Usted ha escogido lo siguiente...")
-print("Cultura: "+GetCultura(Cultura))
-print("Tipo de Lugar: "+GetTipoLugar(TipoLugar))
-print("Presupuesto: "+GetCosto(Costo))
-#-----------------------------------------------------------------------------
-#se hacen las listas necesarias para comparar
-cultura_parameter = GetCultura(Cultura)
-Tipo_parameter = GetTipoLugar(TipoLugar)
-Costo_parameter = GetCosto(Costo)
-with(driver.session()) as ses:
-    LugarCultura = ses.write_transaction(GetCulturaDb,cultura_parameter)   
-    LugarTipo = ses.write_transaction(GetTipoLugarDb,Tipo_parameter)
-    LugarCosto = ses.write_transaction(GetCostosDb,Costo_parameter)
-    
-Recommended_places = RecomendationsEngine(LugarCultura, LugarTipo, LugarCosto)
-usuarioRec = [usuario, Recommended_places]
-with open('recomendaciones.csv', mode ='a', newline='') as f1:
-        csvwriter1 = csv.writer(f1)
-        csvwriter1
-        csvwriter1.writerow(usuarioRec) 
-print("De acuerdo con lo que ha respondido, los lugares recomendados para usted en orden de conveniencia son los siguientes:")
-print()
-ShowRecommendations(Recommended_places)
+        #-----------------------------------------------------------------------------
+        print()
+        print("Usted ha escogido lo siguiente...")
+        print("Cultura: "+GetCultura(Cultura))
+        print("Tipo de Lugar: "+GetTipoLugar(TipoLugar))
+        print("Presupuesto: "+GetCosto(Costo))
+        #-----------------------------------------------------------------------------
+        #se hacen las listas necesarias para comparar
+        cultura_parameter = GetCultura(Cultura)
+        Tipo_parameter = GetTipoLugar(TipoLugar)
+        Costo_parameter = GetCosto(Costo)
+        with(driver.session()) as ses:
+            LugarCultura = ses.write_transaction(GetCulturaDb,cultura_parameter)   
+            LugarTipo = ses.write_transaction(GetTipoLugarDb,Tipo_parameter)
+            LugarCosto = ses.write_transaction(GetCostosDb,Costo_parameter)
+            
+        Recommended_places = RecomendationsEngine(LugarCultura, LugarTipo, LugarCosto)
+        usuarioRec = [usuario, Recommended_places]
+        
+        # Revisa si el usuario ya tiene una recomendacion previa, si si, debe escribir sobre esta, sino, escribe una nueva linea en el csv
+        if usuario in dictRecomendaciones:
+            line_count = 0
+            with open("recomendaciones.csv", 'r') as f2:
+                reader = csv.reader(f2)
+
+                lines = []
+                for line in reader:
+                    if usuario == line[0]:
+                        line[1] = Recommended_places
+                    line_count += 1
+                    lines.append(line)
+            with open("recomendaciones.csv", 'w', newline='') as f3:
+                writer = csv.writer(f3)
+                writer.writerows(lines)
+        else: 
+            with open('recomendaciones.csv', mode ='a', newline='') as f1:
+                    csvwriter1 = csv.writer(f1)
+                    csvwriter1
+                    csvwriter1.writerow(usuarioRec) 
+                    
+        # Muestra las nuevas recomendaciones            
+        print("De acuerdo con lo que ha respondido, los lugares recomendados para usted en orden de conveniencia son los siguientes:")
+        print()
+        ShowRecommendations(Recommended_places)
+        onIn2 = True
+        while (onIn2):    
+            print("\n\nPor favor, escribe 1 para seguir o escribe 2 para salir del programa")
+            try:
+                option3 = 0
+                while option3 <= 0 or option3 >2:
+                    print("Ingrese una opcion dentro del menu")
+                    option3 = int(input())
+                    break
+                break
+            except Exception:
+                print("Ha ingresado un dato invalido\nDato debe ser un numero, intentelo de nuevo")
+                continue
+        if option3 == 1:
+            continue
+        if option3 == 2:
+            break
+        
