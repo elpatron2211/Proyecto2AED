@@ -1,14 +1,14 @@
 """
 Algoritmos y Estructuras de Datos
 Proyecto Fase No.2
-Pablo Herrea, Juan Miguel Gonzalez-Campo, Pedro Marroquín, Paulo Sanchez
+Pablo Herrera, Juan Miguel Gonzalez-Campo, Pedro Marroquín, Paulo Sanchez
 """
 import csv
 from neo4j import GraphDatabase
 driver = GraphDatabase.driver("bolt://localhost:7687",auth=("neo4j","1234"))
 
 #-----------------------------------------------------------------------------
-#se crean los querys para poder hacer las relaciones 
+#se crean los querys para poder hacer las relaciones
 def GetCulturaDb(tx,cultura):
     query = "MATCH (c:Cultura) -- (l:Lugar) WHERE c.name = $nombre RETURN l.name as n"
     result_query = tx.run(query,nombre=cultura)
@@ -87,7 +87,7 @@ def GetCultura(Cultura):
         return "Cultura Ladina"
     elif Cultura == 3:
         return "Cultura Garífuna"
-    
+
 def GetTipoLugar(TipoLugar):
     if TipoLugar == 1:
         return "Rural"
@@ -107,7 +107,7 @@ def RecomendationsEngine(lista1,lista2,lista3):
     RecommendedPlaces = []
     for n in lista1:
         if n in lista2 and n in lista3:
-            RecommendedPlaces.append(n)        
+            RecommendedPlaces.append(n)
     return RecommendedPlaces
 
 def ShowRecommendations(recommendedplaces):
@@ -126,10 +126,10 @@ def ShowRecommendations(recommendedplaces):
 #-----------------------------------------------------------------------------
 #Funciones que trabajan la lógica de inicio de sesión y creación de usuarios
 
-#Funcion para preguntar si se quiere iniciar sesion o registrar un nuevo usuario            
+#Funcion para preguntar si se quiere iniciar sesion o registrar un nuevo usuario
 def IniciarORegistrar():
     onIn = True
-    while (onIn):    
+    while (onIn):
         print("\n\nIngrese 1 para iniciar sesión, ingrese 2 para crear un usuario")
         try:
             option = 0
@@ -141,8 +141,8 @@ def IniciarORegistrar():
         except Exception:
             print("Ha ingresado un dato invalido\nDato debe ser un numero, intentelo de nuevo")
             continue
-    
-#Funcion para iniciar sesión con un usuario existente, devuelve el nombre de usuario   
+
+#Funcion para iniciar sesión con un usuario existente, devuelve el nombre de usuario
 def inicioSesion():
     on = True
     cancelar1 = "999000111"
@@ -155,7 +155,7 @@ def inicioSesion():
             if dictUsuarios.get(usuario) == contrasenia:
                 print("Se ha iniciado sesion!")
                 return usuario
-            else: 
+            else:
                 print("Contrasenia incorrecta, intentelo de nuevo")
                 continue
         else:
@@ -175,9 +175,9 @@ def inicioSesion():
                 return False
     if option == 2:
         return cancelar1
-    
-    
-#Funcion para registrar un nuevo usuario, devuelve el nombre de usuario      
+
+
+#Funcion para registrar un nuevo usuario, devuelve el nombre de usuario
 def registrar():
     on2 = True
     nuevoUsuario = ""
@@ -188,7 +188,7 @@ def registrar():
         if nuevoUsuario in dictUsuarios or nuevoUsuario == "999000111":
             print("\nLo sentimos ese usuario no esta disponible!\n")
             continue
-        else: 
+        else:
             break
     print("Ingrese su contrasenia")
     nuevaContrasenia = input()
@@ -201,22 +201,16 @@ def registrar():
     return nuevoUsuario
 
 #-----------------------------------------------------------------------------
-#Inicio del Programa   
+#Inicio del Programa
 
 #Se lee el archivo que contiene los usuarios y contraseñas
 with open('usuarios.csv', mode='r') as f:
     csvFile = csv.reader(f, delimiter =',')
-    
+
     dictUsuarios = {rows[0]:rows[1] for rows in csvFile}
 
-with open('recomendaciones.csv', mode='r') as f1:
-    csvFile1 = csv.reader(f1, delimiter =',')
-    
-    dictRecomendaciones = {rows[0]:rows[1] for rows in csvFile1}
 
-
-   
-#Inicio de sesión o registro de nuevos usuarios 
+#Inicio de sesión o registro de nuevos usuarios
 print("\n\nInicio de session\n")
 usuario = ""
 on1 = True
@@ -226,7 +220,7 @@ while (on1):
         usuario = inicioSesion()
         if usuario == "999000111":
             continue
-        else: 
+        else:
             break
     else:
         usuario = registrar()
@@ -239,9 +233,12 @@ print("Bienvenido a GuateGrafoTour, tu mejor sistema de recomendacion")
 
 onGlobal = True
 while (onGlobal):
-    
+    with open('recomendaciones.csv', mode='r') as f1:
+        csvFile1 = csv.reader(f1, delimiter =',')
+        dictRecomendaciones = {rows[0]:rows[1] for rows in csvFile1}
     onIn = True
-    while (onIn):    
+    while (onIn):
+
         print("Por favor, escribe 1 para ver tus recomendaciones anteriores o escribe 2 para encontrar nuevas")
         try:
             option2 = 0
@@ -259,7 +256,7 @@ while (onGlobal):
             print("Sus recomendaciones anteriores fueron: ")
             print(dictRecomendaciones.get(usuario))
             onIn1 = True
-            while (onIn1):    
+            while (onIn1):
                 print("\n\nPor favor, escribe 1 para seguir o escribe 2 para salir del programa")
                 try:
                     option3 = 0
@@ -275,15 +272,15 @@ while (onGlobal):
                 continue
             if option3 == 2:
                 break
-        else: 
+        else:
             print("No tienes recomendaciones anteriores, por favor intenta completar nuestra encuesta presionando 2 en el menu principal!")
-        
-    if option2 == 2:     
+
+    if option2 == 2:
         Cultura = MenuCultura()
         while(Cultura==False):
             print()
             Cultura = MenuCultura()
-            
+
         TipoLugar = MenuTipoLugar()
         while(TipoLugar==False):
             print()
@@ -306,13 +303,13 @@ while (onGlobal):
         Tipo_parameter = GetTipoLugar(TipoLugar)
         Costo_parameter = GetCosto(Costo)
         with(driver.session()) as ses:
-            LugarCultura = ses.write_transaction(GetCulturaDb,cultura_parameter)   
+            LugarCultura = ses.write_transaction(GetCulturaDb,cultura_parameter)
             LugarTipo = ses.write_transaction(GetTipoLugarDb,Tipo_parameter)
             LugarCosto = ses.write_transaction(GetCostosDb,Costo_parameter)
-            
+
         Recommended_places = RecomendationsEngine(LugarCultura, LugarTipo, LugarCosto)
         usuarioRec = [usuario, Recommended_places]
-        
+
         # Revisa si el usuario ya tiene una recomendacion previa, si si, debe escribir sobre esta, sino, escribe una nueva linea en el csv
         if usuario in dictRecomendaciones:
             line_count = 0
@@ -328,18 +325,18 @@ while (onGlobal):
             with open("recomendaciones.csv", 'w', newline='') as f3:
                 writer = csv.writer(f3)
                 writer.writerows(lines)
-        else: 
+        else:
             with open('recomendaciones.csv', mode ='a', newline='') as f1:
                     csvwriter1 = csv.writer(f1)
                     csvwriter1
-                    csvwriter1.writerow(usuarioRec) 
-                    
-        # Muestra las nuevas recomendaciones            
+                    csvwriter1.writerow(usuarioRec)
+
+        # Muestra las nuevas recomendaciones
         print("De acuerdo con lo que ha respondido, los lugares recomendados para usted en orden de conveniencia son los siguientes:")
         print()
         ShowRecommendations(Recommended_places)
         onIn2 = True
-        while (onIn2):    
+        while (onIn2):
             print("\n\nPor favor, escribe 1 para seguir o escribe 2 para salir del programa")
             try:
                 option3 = 0
