@@ -9,7 +9,13 @@ driver = GraphDatabase.driver("bolt://localhost:7687",auth=("neo4j","1234"))
 
 #-----------------------------------------------------------------------------
 #se crean los querys para poder hacer las relaciones
+
 def GetCulturaDb(tx,cultura):
+    """
+    Esta función realiza un query a la base de datos para obtener todas las entradas que tienen como parametro de cultura la que indico el usuario, e.g todas las bases de Cultura Ladina
+
+    return: todas las entradas de la base de datos que tienen la cultura especificada
+    """
     query = "MATCH (c:Cultura) -- (l:Lugar) WHERE c.name = $nombre RETURN l.name as n"
     result_query = tx.run(query,nombre=cultura)
     firsts_relations = []
@@ -18,6 +24,11 @@ def GetCulturaDb(tx,cultura):
     return firsts_relations
 
 def GetTipoLugarDb(tx,TipoLugar):
+    """
+    Esta función realiza un query a la base de datos para obtener todas las entradas que tienen como parametro de TipoLugar la que indico el usuario, e.g todas las entradas que tienen tipoLugar Urbano
+
+    return: todas las entradas de la base de datos que tienen el TipoLugar especificao especificada
+    """
     query = "MATCH (t:TipoLugar) -- (l:Lugar) WHERE t.name = $nombre RETURN l.name as n"
     result_query = tx.run(query,nombre=TipoLugar)
     second_relations = []
